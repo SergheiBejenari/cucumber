@@ -1,6 +1,6 @@
 package utils;
 
-import Driver.Driver;
+import driver.Driver;
 import io.cucumber.java.Scenario;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.OutputType;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
@@ -37,9 +37,7 @@ public class ScreenshotUtil {
     }
 
     public static String getCurrentTime() {
-        LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String time = dateTime.format(formatter);
-        return time;
+        return ZonedDateTime.now().format(formatter);
     }
 }

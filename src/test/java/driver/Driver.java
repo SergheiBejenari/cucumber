@@ -1,4 +1,4 @@
-package Driver;
+package driver;
 
 import org.openqa.selenium.WebDriver;
 
@@ -15,6 +15,10 @@ public class Driver {
             driver.manage().window().maximize();
         }
         return driver;
+    }
+
+    public static void closeDriver(){
+        driver.close();
     }
 
     public static void quitDriver() {
