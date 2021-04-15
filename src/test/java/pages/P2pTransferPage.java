@@ -1,17 +1,16 @@
 package pages;
 
-import io.cucumber.datatable.DataTable;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import pages.common.BasePage;
-import pages.common.FormService;
-
-import java.util.Map;
 
 import static enums.Pages.P2P_PAGE;
 
-public class P2pTransferPage extends BasePage implements FormService {
+@Getter
+public class P2pTransferPage extends BasePage {
 
     @FindBy(xpath = "//body/div[@id='maib-p2p-app']/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/input[1]")
     WebElement sendersCardNumberField;
@@ -40,13 +39,22 @@ public class P2pTransferPage extends BasePage implements FormService {
     @FindBy(xpath = "//div[contains(@class,'recaptcha-checkbox-border')]")
     WebElement notRobotCheckBox;
 
+    @FindBy(xpath = "//a[contains(text(),'Success')]")
+    WebElement successMessage;
+
     public P2pTransferPage(WebDriver driver) {
         super(driver, String.valueOf(P2P_PAGE));
     }
 
-    @Override
-    public void fillForm(DataTable dataTable) {
-        Map<String, String> data = dataTable.asMap(String.class, String.class);
-        sendersCardNumberField.sendKeys(data.get(""));
+    public boolean success() {
+        if (successMessage.getText().toString().contains("Success")) {
+            return true;
+        } else
+            return false;
+    }
+
+    public void select(WebElement element, String value) {
+        Select select = new Select(element);
+        select.selectByVisibleText("3");
     }
 }

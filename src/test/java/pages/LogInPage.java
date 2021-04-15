@@ -23,15 +23,11 @@ public class LogInPage extends BasePage {
     @FindBy(xpath = "//input[@id='loginbutton']")
     WebElement loginButton;
 
-    public void loginFirstUser(){
-        userLoginIDField.sendKeys("User1");
-        passwordField.sendKeys("qwerty123456");
+    public void loginUser(String loginId, String password) {
+        userLoginIDField.sendKeys(loginId);
+        passwordField.sendKeys(password);
     }
 
-    public void loginSecondUser(){
-        userLoginIDField.sendKeys("User2");
-        passwordField.sendKeys("qwerty12345");
-    }
 
     public LogInPage(WebDriver driver) {
         super(driver, String.valueOf(LOGIN_PAGE));
