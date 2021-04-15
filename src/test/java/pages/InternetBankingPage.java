@@ -20,17 +20,27 @@ public class InternetBankingPage extends BasePage {
     @FindBy(xpath = "//a[@id='MenuTreeViewn24']")
     WebElement fundsTransactions;
 
+    @FindBy(xpath = "//a[@id='MenuTreeViewn0']")
+    WebElement accountInformationDropDownBox;
+
+    @FindBy(xpath = "//a[@id='MenuTreeViewn2']")
+    WebElement accountStatementButton;
+
     @FindBy(xpath = "//a[@id='MenuTreeViewn27']")
     WebElement localCurrencyTransfer;
 
-    @FindBy(css = "#aspx_preferredaccount_preferredaccount_ascx0bb0805d-9a8f-4f1b-bf33-b86668544f51_buttonViewAllAccounts")
+    @FindBy(xpath = "//a[contains(@id,'buttonViewAllAccounts')]")
     WebElement viewAllAccountsButton;
 
-    @FindBy(css = "#aspx_accountinformation_accountsummary_ascxACCOUNT_SUMMARY640940dd-3e37-41cd-822a-bba61e2403f5_ImageDebitAccountSummaryLinkButton")
+    @FindBy(xpath = "//span[contains(@id,'LnkDebit')]")
     WebElement debitCardAccountDropDownBox;
 
-    @FindBy(css = "#aspx_accountinformation_accountsummary_ascxACCOUNT_SUMMARY640940dd-3e37-41cd-822a-bba61e2403f5_grdDebitAccountHeader_grdDebitAccountDetails_0_lblAvailableBalance_0")
+    @FindBy(xpath = "//span[contains(@id,'lblAvailableBalance')]")
     WebElement accountBalanceField;
+
+    @FindBy(xpath = "//input[contains(@id, 'buttonClose')]")
+    WebElement exitButton;
+
 
     public InternetBankingPage(WebDriver driver) {
         super(driver, String.valueOf(INTERNET_BANKING_PAGE));

@@ -8,7 +8,6 @@ import org.openqa.selenium.remote.BrowserType;
 import utils.PropertyReader;
 
 public class DriverFactory {
-    private static final String RESOURCES_PATH = "src/test/resources/";
 
     public static WebDriver getDriver() {
         String browserName = PropertyReader.applicationProperties().getProperty("browser");

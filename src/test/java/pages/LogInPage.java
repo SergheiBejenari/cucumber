@@ -28,7 +28,6 @@ public class LogInPage extends BasePage {
         passwordField.sendKeys(password);
     }
 
-
     public LogInPage(WebDriver driver) {
         super(driver, String.valueOf(LOGIN_PAGE));
     }

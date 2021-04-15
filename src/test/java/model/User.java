@@ -20,6 +20,7 @@ public class User {
         this.userLoginId = userLoginId;
         this.password = password;
     }
+
     @Override
     public String toString() {
         return "User{" +

@@ -18,5 +18,4 @@ public abstract class BasePage {
     public String getUrl() {
         return url;
     }
-
 }

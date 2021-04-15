@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 import pages.common.BasePage;
 
 import static enums.Pages.P2P_PAGE;
@@ -47,14 +46,6 @@ public class P2pTransferPage extends BasePage {
     }
 
     public boolean success() {
-        if (successMessage.getText().toString().contains("Success")) {
-            return true;
-        } else
-            return false;
-    }
-
-    public void select(WebElement element, String value) {
-        Select select = new Select(element);
-        select.selectByVisibleText("3");
+        return successMessage.getText().contains("Success");
     }
 }
