@@ -8,7 +8,7 @@ public enum Pages {
     ABOUT_THE_BANK("About The Bank", PropertyReader.applicationProperties().getProperty("base.url") + "desre-banca/"),
     LOGIN_PAGE("Log In Page" ,"base url" + "BankFlexPB/(S(v34rnp3gj4n20to2ccwzhg4k))/Login.aspx?locale=en-EN"),
     P2P_PAGE("P2P", "https://p2p.maib.md/en"),
-    INTERNET_BANKING_PAGE("Internet banking", "https://personal.maib.md/BankFlexPB/(S(5fgg5rw25zg3b0ldxkods0hp))/home"),
+    INTERNET_BANKING_PAGE("Internet banking", "https://personal.maib.md/BankFlexPB/(S(0zmuyiwyqzg51etlu2gxpdik))/Login.aspx?locale=ro-RO"),
     ACCOUNT_STATEMENT_PAGE("Account statement", "https://personal.maib.md/BankFlexPB/(S(w0esisalsnmusi511c1nummu))/home");
 
     private final String pageName;

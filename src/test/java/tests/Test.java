@@ -1,6 +1,5 @@
 package tests;
 
-import model.User;
 import service.UserCreator;
 
 public class Test {
