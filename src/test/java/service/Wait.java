@@ -34,8 +34,15 @@ public class Wait {
                 .withTimeout(Duration.ofSeconds(50))
                 .pollingEvery(Duration.ofSeconds(5))
                 .ignoring(NoSuchElementException.class);
-        wait.until(visibilityOf(element));
+        wait.until(elementToBeClickable(element));
         element.sendKeys(value);
 
+    }
+
+    public void waitField(WebElement element) {
+        org.openqa.selenium.support.ui.Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(50))
+                .pollingEvery(Duration.ofSeconds(5));
+                wait.until(visibilityOf(element));
     }
 }

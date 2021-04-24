@@ -1,6 +1,5 @@
 package pages;
 
-import enums.Pages;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
