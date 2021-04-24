@@ -2,6 +2,8 @@ package driver;
 
 import org.openqa.selenium.WebDriver;
 
+import java.util.ArrayList;
+
 public class Driver {
     private static WebDriver driver;
 
@@ -24,5 +26,11 @@ public class Driver {
     public static void quitDriver() {
         driver.quit();
         driver = null;
+    }
+
+    public static void switchToActualTab() {
+        ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
+        closeDriver();
+        driver.switchTo().window(tabs2.get(1));
     }
 }

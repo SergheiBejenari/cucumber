@@ -3,18 +3,21 @@ package model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
 public class User {
     private String userLoginId;
-    private String userName;
-    private String userSureName;
+    private String firstName;
+    private String lastName;
     private String cardNumber;
     private String password;
     private String expirationMonth;
     private String expirationYear;
+    private List<Double> balanceHistory = new ArrayList<>();
 
     public User(String userLoginId, String password) {
         this.userLoginId = userLoginId;

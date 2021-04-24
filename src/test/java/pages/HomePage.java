@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.common.BasePage;
-import utils.PropertyReader;
 
 import static enums.Pages.HOME_PAGE;
 
@@ -27,8 +26,14 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "(//a[text()='Banking'])[1]")
     WebElement internetBanking;
 
-    @FindBy(xpath = "(//a[contains(text(),'rapide')])[1]")
+    @FindBy(xpath = "//*[@id='modal_form']/div[1]/div/a[4]")
     WebElement p2pTransferButton;
+
+    @FindBy(xpath = "//a[contains(@href,'twitter')]")
+    WebElement twitter;
+
+    @FindBy(xpath = "//input[contains(@placeholder,'Поиск в Твиттере')]")
+    WebElement SearchInTwitterField;
 
     public HomePage(WebDriver driver) {
         super(driver, HOME_PAGE.getUrl());
