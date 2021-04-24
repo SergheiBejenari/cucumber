@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import pages.common.BasePage;
 import utils.PropertyReader;
 
+import static enums.Pages.HOME_PAGE;
+
 @Getter
 public class HomePage extends BasePage {
 
@@ -29,6 +31,6 @@ public class HomePage extends BasePage {
     WebElement p2pTransferButton;
 
     public HomePage(WebDriver driver) {
-        super(driver, PropertyReader.applicationProperties().getProperty("base.url"));
+        super(driver, HOME_PAGE.getUrl());
     }
 }

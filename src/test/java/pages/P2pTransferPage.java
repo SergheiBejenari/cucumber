@@ -42,7 +42,7 @@ public class P2pTransferPage extends BasePage {
     WebElement successMessage;
 
     public P2pTransferPage(WebDriver driver) {
-        super(driver, String.valueOf(P2P_PAGE));
+        super(driver, P2P_PAGE.getUrl());
     }
 
     public boolean success() {

@@ -33,6 +33,6 @@ public class LogInPage extends BasePage {
     }
 
     public LogInPage(WebDriver driver) {
-        super(driver, String.valueOf(LOGIN_PAGE));
+        super(driver, LOGIN_PAGE.getUrl());
     }
 }

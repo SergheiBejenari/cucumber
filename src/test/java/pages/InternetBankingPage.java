@@ -43,6 +43,6 @@ public class InternetBankingPage extends BasePage {
 
 
     public InternetBankingPage(WebDriver driver) {
-        super(driver, String.valueOf(INTERNET_BANKING_PAGE));
+        super(driver, INTERNET_BANKING_PAGE.getUrl());
     }
 }
