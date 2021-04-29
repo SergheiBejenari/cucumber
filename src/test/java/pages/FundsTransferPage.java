@@ -56,5 +56,3 @@ public class FundsTransferPage {
     @FindBy(css = "#aspx_fundstransfer_transferlocalcurrency_ascxTRANSFER_LOCAL_CURRENCYe142b8b7-c4fb-4d17-b767-64aba7df78c7_btnMPENoticeNo")
     WebElement rejectPopupButton;
 }
-
-

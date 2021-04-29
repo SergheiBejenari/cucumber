@@ -1,49 +1,58 @@
 package steps;
 
 import driver.Driver;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pages.AccountStatementPage;
-import pages.HomePage;
-import pages.InternetBankingPage;
-import pages.P2pTransferPage;
+import model.User;
+import org.openqa.selenium.WebDriver;
+import pages.*;
 import service.UserCreator;
 import service.Wait;
-import tests.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static service.ScenarioContext.TRANSACTION_AMOUNT;
 
 public class TransferFundsStep {
 
-    private final HomePage homePage = new HomePage(Driver.getDriver());
-    private final P2pTransferPage p2pTransferPage = new P2pTransferPage(Driver.getDriver());
-    private final InternetBankingPage internetBankingPage = new InternetBankingPage(Driver.getDriver());
-    private final CommonSteps commonSteps = new CommonSteps();
-    private final AccountStatementPage accountStatementPage = new AccountStatementPage(Driver.getDriver());
-    Wait wait = new Wait(Driver.getDriver());
+    private final WebDriver driver = Driver.getDriver();
+    private final HomePage homePage = new HomePage(driver);
+    private final P2pTransferPage p2pTransferPage = new P2pTransferPage(driver);
+    private final InternetBankingPage internetBankingPage = new InternetBankingPage(driver);
+    private final AccountStatementPage accountStatementPage = new AccountStatementPage(driver);
+    private final LogInPage logInPage = new LogInPage(driver);
+    private final CommonSteps commonSteps = new CommonSteps(
+            internetBankingPage,
+            logInPage,
+            p2pTransferPage,
+            homePage,
+            accountStatementPage
+    );
+    private final Wait wait = new Wait(Driver.getDriver());
+    private final User firstUser = UserCreator.createFirstUser();
+    private final User secondUser = UserCreator.createSecondUser();
 
     @Given("Users have positive bill")
     public void usersHavePositiveBill() {
-        Driver.getDriver().get(homePage.getUrl());
-        commonSteps.logInUser("User1", "qwerty123456");
-        commonSteps.verifyBalance("User1", UserCreator.USER_1_AMOUNT, Test.isPositiveBillUser1());
-        commonSteps.logInUser("User2", "qwerty98765");
-        commonSteps.verifyBalance("User2", UserCreator.USER_2_AMOUNT, Test.isPositiveBillUser2());
+        commonSteps.logInUser(firstUser);
+        commonSteps.verifyBalance(firstUser);
+        commonSteps.logInUser(secondUser);
+        commonSteps.verifyBalance(secondUser);
     }
 
-    @When("User is willing to perform Person To Person transfer amount to another User")
-    public void userIsWillingToPerformPersonToPersonTransferAmountToAnotherUser() {
+    @When("User is willing to perform Person To Person transfer {string} to another User")
+    public void userIsWillingToPerformPersonToPersonTransferAmountToAnotherUser(String field, DataTable dataTable) {
+        Driver.getDriver().get(homePage.getUrl());
         wait.click(homePage.getMaibOnline());
         wait.click(homePage.getP2pTransferButton());
-        commonSteps.createSenders("1234567890123456", "3", "2021");
-        wait.sendKeys(p2pTransferPage.getAmountField(), "50");
-        commonSteps.createReceivers("1234567890123456", "Serghei", "CardHolder");
+        commonSteps.createSender(firstUser);
+        commonSteps.createReceiver(secondUser);
+        wait.click(p2pTransferPage.getAmountField());
+        p2pTransferPage.fillForm(dataTable);
         wait.click(p2pTransferPage.getAgreeCheckBox());
-        wait.click(p2pTransferPage.getNotRobotCheckBox());
-        Driver.closeDriver();
     }
 
     @And("Success message is displayed")
@@ -53,41 +62,38 @@ public class TransferFundsStep {
 
     @Then("The funds were debited in the amount in which they were sent")
     public void theFundsWereDebitedInTheAmountInWhichTheyWereSent() {
-        commonSteps.logInUser("User1", "qwerty123456");
-        wait.click(internetBankingPage.getMenuButton());
-        wait.click(internetBankingPage.getViewAllAccountsButton());
-        wait.click(internetBankingPage.getDebitCardAccountDropDownBox());
-        assertEquals("Money was transferred successfully", UserCreator.USER_1_AMOUNT,
-                UserCreator.USER_1_AMOUNT_AFTER_TRANSFER);
-        Driver.closeDriver();
+        commonSteps.logInUser(firstUser);
+        commonSteps.verifyBalance(firstUser);
+        double initialBalance = firstUser.getBalanceHistory().get(0);
+        double balanceAfterTransaction = firstUser.getBalanceHistory().get(1);
+        assertEquals("Money were transferred successfully",
+                (initialBalance - balanceAfterTransaction), TRANSACTION_AMOUNT, 0.0);
     }
 
     @And("The outgoing Person To Person transfer operation appears on the client's statement")
     public void theOutgoingPersonToPersonTransferOperationAppearsOnTheClientSStatement() {
-        commonSteps.logInUser("User1", "qwerty123456");
+        commonSteps.logInUser(firstUser);
         commonSteps.getLastTransactions();
-        UserCreator.USER_1_CURRENT_AMOUNT_AFTER_TRANSFER = Double.parseDouble(accountStatementPage.getDebitField().getText());
-        assertEquals("Current amount equals transferred amount", UserCreator.USER_1_AMOUNT_AFTER_TRANSFER,
-                UserCreator.USER_1_CURRENT_AMOUNT_AFTER_TRANSFER);
-        Driver.closeDriver();
+        double actualTransactionAmount = Double.parseDouble(accountStatementPage.getDebitField().getText());
+        double expectedTransactionAmount = -TRANSACTION_AMOUNT;
+        assertEquals("Current amount equals transferred amount", expectedTransactionAmount, actualTransactionAmount);
     }
 
     @And("The incoming Person To Person transfer operation appears on another client's statement")
-    public void theIncomingPersonToPersonTransferOperationAppearsOnAnotherClientSStatement() throws InterruptedException {
-        commonSteps.logInUser("User1", "qwerty123456");
+    public void theIncomingPersonToPersonTransferOperationAppearsOnAnotherClientSStatement() {
+        commonSteps.logInUser(secondUser);
         commonSteps.getLastTransactions();
-        UserCreator.USER_2_CURRENT_AMOUNT_AFTER_TRANSFER = Double.parseDouble(accountStatementPage.getDebitField().getText());
-        assertEquals("Current amount equals transferred amount", UserCreator.USER_2_AMOUNT_AFTER_TRANSFER,
-                UserCreator.USER_2_CURRENT_AMOUNT_AFTER_TRANSFER);
-        Driver.closeDriver();
+        double actualTransactionAmount = Double.parseDouble(accountStatementPage.getDebitField().getText());
+        assertEquals("Current amount equals transferred amount", TRANSACTION_AMOUNT, actualTransactionAmount);
     }
 
     @And("The user's account has increased by the amount of money that was sent")
-    public void theUserSAccountHasIncreasedByTheAmountOfMoneyThatWasSent() throws InterruptedException {
-        commonSteps.logInUser("User1", "qwerty123456");
-        commonSteps.getLastTransactions();
-        assertEquals("Money was transferred successfully", UserCreator.USER_2_AMOUNT,
-                UserCreator.USER_2_AMOUNT_AFTER_TRANSFER);
-        Driver.closeDriver();
+    public void theUserSAccountHasIncreasedByTheAmountOfMoneyThatWasSent() {
+        commonSteps.logInUser(secondUser);
+        commonSteps.verifyBalance(secondUser);
+        double initialBalance = secondUser.getBalanceHistory().get(0);
+        double balanceAfterTransaction = secondUser.getBalanceHistory().get(1);
+        assertEquals("Money were transferred successfully",
+                (balanceAfterTransaction - initialBalance), TRANSACTION_AMOUNT, 0.0);
     }
 }

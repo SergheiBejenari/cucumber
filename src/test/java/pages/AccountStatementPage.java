@@ -1,11 +1,12 @@
 package pages;
 
-import enums.Pages;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.common.BasePage;
+
+import static enums.Pages.ACCOUNT_STATEMENT_PAGE;
 
 @Getter
 public class AccountStatementPage extends BasePage {
@@ -32,6 +33,6 @@ public class AccountStatementPage extends BasePage {
     WebElement debitField;
 
     public AccountStatementPage(WebDriver driver) {
-        super(driver, String.valueOf(Pages.ACCOUNT_STATEMENT_PAGE));
+        super(driver, ACCOUNT_STATEMENT_PAGE.getUrl());
     }
 }
